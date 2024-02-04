@@ -1,13 +1,190 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>React ToDo App</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
   </head>
+  <style>
+    #form {
+      border: 2px solid gray;
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      align-items: center;
+      justify-content: center;
+      height: 50%;
+      gap: 20px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    #form button {
+      width: 80%;
+      height: 40px;
+      background-color: teal;
+      color: white;
+      font-size: 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #form input {
+      width: 80%;
+      height: 40px;
+      font-size: 30px;
+      outline: none;
+    }
+    #container {
+      border: 2px solid black;
+      width: 90vw;
+      height: 500px;
+      margin: auto;
+      display: flex;
+      padding: 10px;
+      align-items: center;
+      flex-direction: column;
+    }
+    #container table {
+      border: 2px solid gray;
+      width: 60%;
+      margin-top: 10px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    tbody > tr > td {
+      text-align: center;
+    }
+    #update {
+      background-color: rgb(1, 232, 253);
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    #delete {
+      background-color: red;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    #update-box{
+        display: flex;
+        
+    }
+  </style>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <script type="text/babel">
+      const { useState } = React;
+      const TodoApp = () => {
+        const [TodoName, setTodoName] = useState("");
+        const [Todos, setTodos] = useState([
+          { name: "assignment", status: false },
+          { name: "assignment", status: false },
+          { name: "assignment", status: false },
+        ]);
+
+        const [updateTodoId, setUpdateTodoId] = useState(null);
+        const [updateTodoName,setUpdateTodoName]=useState('')
+        console.log(updateTodoId);
+
+        const handleAddTodo = (e) => {
+          e.preventDefault();
+          setTodos([...Todos, { name: TodoName, status: false }]);
+          setTodoName("");
+        };
+
+        const handleDeleteTodo = (id) => {
+          const filteredTodos = Todos.filter((_, index) => index != id);
+
+          setTodos(filteredTodos);
+        };
+        
+        const handleUpdateToggle=(index,todo)=>{
+           setUpdateTodoId(index)
+           setUpdateTodoName(todo.name)
+        }
+
+        const handleUpdateTodo=(id)=>{
+            const updatedTodos=Todos.map((todo,index)=>{
+            if(index==id){
+                return {...todo,name:updateTodoName}
+            }else{
+                return  todo
+            }
+            })
+            setTodos(updatedTodos);
+            setUpdateTodoId(null)
+        }
+
+        return (
+          <div id="container">
+            <form id="form" onSubmit={handleAddTodo}>
+              <input
+                type="text"
+                id="name"
+                value={TodoName}
+                placeholder="Your Todo"
+                onChange={(e) => setTodoName(e.target.value)}
+              />
+              <button type="submit">ADD</button>
+            </form>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>name</th>
+                  <th>status</th>
+                  <th>update</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Todos.map((todo, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+
+                    {updateTodoId ===index ? (
+                      <div id="update-box">
+                        <input type="text" 
+                        value={updateTodoName} onChange={(e)=>setUpdateTodoName(e.target.value)} /> <button onClick={()=>handleUpdateTodo(index)}>submit</button>
+                      </div>
+                    ) : (
+                      <td>{todo.name}</td>
+                    )}
+                    <td>{todo.status ? "Done" : "Pending"}</td>
+                    <td 
+                    onClick={()=>handleUpdateToggle(index,todo)}
+                    
+                    id="update" >Update</td>
+
+                    <td onClick={() => handleDeleteTodo(index)} id="delete">
+                      Delete
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      };
+
+      ReactDOM.render(<TodoApp />, document.getElementById("root"));
+    </script>
   </body>
 </html>
+
+
+
+
+
+
