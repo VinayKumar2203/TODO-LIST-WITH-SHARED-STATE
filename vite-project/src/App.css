@@ -1,0 +1,39 @@
+.TodoApp{
+  border: 2px solid teal;
+  width: 90vh;
+  height: 50vh;
+  margin: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.TasksBox{
+  border: 2px solid red;
+  width: 50vh;
+  height: 40vh;
+  margin:auto;
+  padding: 10px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.TasksBox input,button{
+  height: 2rem;
+  width: 80%;
+  border-radius: 10px;
+  outline: none;
+  font-size: 18px;
+}
+.TasksBox button{
+  border: none;
+  background-color: rgb(21, 146, 146);
+  color: whitesmoke;
+  cursor: pointer;
+}
+.TasksBox button:hover{
+  background-color: rgb(107, 235, 235);
+  color: #000;
+}
